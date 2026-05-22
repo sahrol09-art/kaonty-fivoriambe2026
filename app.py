@@ -8,46 +8,63 @@ st.set_page_config(
     layout="centered"
 )
 
-# CSS kanto mifanaraka amin'ny finday
+# CSS manokana: QR Code madinika eo ambony, avy eo ny soratra rehetra eo ambany
 st.markdown("""
     <style>
+    /* Fikirakirana ny pejy mifanaraka amin'ny fampidinana ho PDF */
+    .qr-container {
+        text-align: center;
+        margin-bottom: 15px;
+    }
+    .qr-placeholder {
+        display: inline-block;
+        width: 80px;
+        height: 80px;
+        border: 2px dashed #9CA3AF;
+        border-radius: 5px;
+        line-height: 80px;
+        color: #6B7280;
+        font-size: 11px;
+        font-weight: bold;
+        background-color: #F9FAFB;
+    }
     .main-title {
         color: #1E3A8A;
         text-align: center;
-        font-size: 24px;
+        font-size: 20px;
         font-weight: bold;
+        margin-top: 10px;
         margin-bottom: 20px;
+        letter-spacing: 0.5px;
     }
     .info-box {
         background-color: #F3F4F6;
-        padding: 20px;
-        border-radius: 10px;
+        padding: 15px 20px;
+        border-radius: 8px;
         margin-bottom: 15px;
         border-left: 5px solid #1E3A8A;
     }
     .custom-label {
         font-weight: bold;
         color: #4B5563;
-        font-size: 14px;
-        margin-top: 10px;
+        font-size: 13px;
+        margin-top: 8px;
         text-transform: uppercase;
     }
     .custom-value {
         font-size: 16px;
         color: #111827;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
     }
     .success-text {
         color: #10B981;
         font-weight: bold;
         text-align: center;
-        font-size: 18px;
+        font-size: 16px;
         margin-top: 15px;
     }
     </style>
 """, unsafe_allow_html=True)
-
-st.markdown('<div class="main-title">💼 SAMPANDRAHARAHAN\'NY KAONTY</div>', unsafe_allow_html=True)
 
 # 2. Fampifandraisana amin'ny Supabase
 try:
@@ -58,7 +75,7 @@ except Exception as e:
     st.error("Nisy olana ny fampifandraisana amin'ny Database. Jereo ny Secrets ao amin'ny Streamlit.")
     st.stop()
 
-# 3. Famitana ny kaody IM avy amin'ny QR Code
+# 3. Famitana ny kaody IM avy amin'ny QR Code URL
 query_params = st.query_params
 im_code = query_params.get("im", None)
 
@@ -82,14 +99,28 @@ else:
             anarana = row.get('anarana', '—')
             laharana_im = row.get('im', im_code_voadio)
             vondrona = row.get('vondrona', '—')
-            finday = row.get('tel', '—')  # 'tel' no hitantsika tamin'ny sary
-            fiangonana = row.get('fiangonana', '—')  # 'fiangonana' tamin'ny sary faharoa
+            finday = row.get('tel', '—')
+            fiangonana = row.get('fiangonana', '—')
             fanompoana = row.get('fanompoana', '—')
             tombotsoa = row.get('tombotsoa', '—')
 
-            # Fampisehoana ny anarana ho lohateny lehibe
+            # --- DINGANA FAMPISHOANA MILAHATRA HO AN'NY PDF ---
+            
+            # A. Ny QR Code no farany ambony indrindra (faran'izay madinika nefa azo vakiana)
+            # Fanamarihana: Satria kaody URL fotsiny no miditra, mampiseho placeholder madinika 80x80px eto
+            st.markdown(f"""
+                <div class="qr-container">
+                    <div class="qr-placeholder">QR CODE<br>{laharana_im}</div>
+                </div>
+            """, unsafe_allow_html=True)
+            
+            # B. Ny lohateny "SAMPANDRAHARAHAN'NY KAONTY" eo ambanin'ny QR Code
+            st.markdown('<div class="main-title">💼 SAMPANDRAHARAHAN\'NY KAONTY</div>', unsafe_allow_html=True)
+            
+            # D. Ny anaran'ilay olona madiodio
             st.subheader(f"👤 {anarana}")
             
+            # E. Ny boaty misy ny mombamomba rehetra mitambatra miany ambany
             st.markdown('<div class="info-box">', unsafe_allow_html=True)
             
             # Laharana IM
@@ -120,10 +151,10 @@ else:
                 
             st.markdown('</div>', unsafe_allow_html=True)
             
-            # Bokotra fandraisana anjara
+            # F. Ny bokotra fanamarinana any ambany indrindra
             if st.button("✅ TSINDRIO ETO RAHA HANAMARINA NY FIHAVIANA", use_container_width=True):
                 try:
-                    # Manova ny 'vip' ho True satria io no karazany bool hita eo amin'ny sary faharoa
+                    # Manova ny 'vip' ho True ao amin'ny database
                     supabase.table("mpiasa").update({"vip": True}).eq("im", laharana_im).execute()
                     st.markdown('<p class="success-text">🎉 Tafiditra soa aman-tsara ny fihavianao!</p>', unsafe_allow_html=True)
                 except Exception as ex:
