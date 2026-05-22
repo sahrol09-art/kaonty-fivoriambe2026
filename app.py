@@ -1,6 +1,5 @@
 import streamlit as st
 from supabase import create_client, Client
-import re
 
 # 1. Fikirakirana ny pejy Streamlit
 st.set_page_config(
@@ -9,7 +8,7 @@ st.set_page_config(
     layout="centered"
 )
 
-# Fisehoana kanto ho an'ny finday
+# CSS kanto ho an'ny finday
 st.markdown("""
     <style>
     .main-title {
@@ -31,6 +30,7 @@ st.markdown("""
         color: #4B5563;
         font-size: 14px;
         margin-top: 10px;
+        text-transform: uppercase;
     }
     .custom-value {
         font-size: 16px;
@@ -49,15 +49,6 @@ st.markdown("""
 
 st.markdown('<div class="main-title">💼 SAMPANDRAHARAHAN\'NY KAONTY</div>', unsafe_allow_html=True)
 
-# Fitaovana mandavaka sy manadio ny HTML rehetra avy amin'ny Supabase
-def manadio_tanteraka(teksta):
-    if not teksta:
-        return ""
-    voadio = re.sub(r'<[^<]+?>', '', str(teksta))
-    for teny in ["Laharana IM", "Vondrona", "Laharana finday", "Fiangonana", "Tombotsoa sy Fanompoana"]:
-        voadio = voadio.replace(teny, "")
-    return voadio.strip()
-
 # 2. Fampifandraisana amin'ny Supabase
 try:
     url: str = st.secrets["SUPABASE_URL"]
@@ -75,60 +66,47 @@ if not im_code:
     st.warning("⚠️ Tsy misy kaody IM voavaky. Miandry scan avy amin'ny karatra...")
 else:
     try:
-        # !!! HANITSIAVANA HO AN'NY 'Fitantanana_Fiara' !!!
-        response = supabase.table("Fitantanana_Fiara").select("*").eq("im_code", im_code).execute()
+        # MIFANDRAY AMIN'NY TABILAO 'mpiasa' ARY MIREKIDY AMIN'NY TSANGANANA 'im'
+        response = supabase.table("mpiasa").select("*").eq("im", im_code).execute()
         data = response.data
 
         if len(data) == 0:
-            st.error(f"❌ Tsy hita ao amin'ny database ny mpiasa manana kaody: {im_code}")
+            st.error(f"❌ Tsy hita ao amin'ny tabilao 'mpiasa' ny kaody: {im_code}")
         else:
             row = data[0]
             
-            # 1. ANARANA
-            anarana_voadio = manadio_tanteraka(row.get('nom', 'RASOLOMANANA ROLAND'))
-            st.subheader(f"👤 {anarana_voadio}")
+            # Alaina ireo angona avy amin'ny tabilao 'mpiasa'
+            laharana_im = row.get('im', im_code)
+            vondrona = row.get('vondrona', '—')
+            andraikitra = row.get('andraikitra', '—')
             
-            # 2. NY MOMBAMOMBA NY MPIASA
+            # Rehefa nodiovina tamin'ilay kaody teo aloha ny anarana raha sendra nisy miverina
+            anarana_fampiseho = str(andraikitra).replace("<div class=\"info-value\">", "").replace("</div>", "").strip()
+
+            # Fampisehoana ny anarana ho lohateny
+            st.subheader(f"👤 {anarana_fampiseho}")
+            
             st.markdown('<div class="info-box">', unsafe_allow_html=True)
             
             # Laharana IM
             st.markdown('<div class="custom-label">Laharana IM</div>', unsafe_allow_html=True)
-            st.markdown(f'<div class="custom-value">🆔 {im_code}</div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="custom-value">🆔 {laharana_im}</div>', unsafe_allow_html=True)
             
             # Vondrona
-            vondrona_voadio = manadio_tanteraka(row.get('vondrona', ''))
-            if vondrona_voadio:
-                st.markdown('<div class="custom-label">Vondrona</div>', unsafe_allow_html=True)
-                st.markdown(f'<div class="custom-value">{vondrona_voadio}</div>', unsafe_allow_html=True)
-                
-            # Finday
-            finday_voadio = manadio_tanteraka(row.get('finday', ''))
-            if finday_voadio:
-                st.markdown('<div class="custom-label">Laharana finday</div>', unsafe_allow_html=True)
-                st.markdown(f'<div class="custom-value">{finday_voadio}</div>', unsafe_allow_html=True)
-                
-            # Fiangonana
-            fiangonana_voadio = manadio_tanteraka(row.get('fiangonana', ''))
-            if fiangonana_voadio:
-                st.markdown('<div class="custom-label">Fiangonana</div>', unsafe_allow_html=True)
-                st.markdown(f'<div class="custom-value">{fiangonana_voadio}</div>', unsafe_allow_html=True)
-                
-            # Tombotsoa sy Fanompoana
-            asa_voadio = manadio_tanteraka(row.get('asa', ''))
-            if asa_voadio:
-                st.markdown('<div class="custom-label">Tombotsoa sy Fanompoana</div>', unsafe_allow_html=True)
-                st.markdown(f'<div class="custom-value">{asa_voadio}</div>', unsafe_allow_html=True)
-                
+            st.markdown('<div class="custom-label">Vondrona</div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="custom-value">👥 {vondrona}</div>', unsafe_allow_html=True)
+            
             st.markdown('</div>', unsafe_allow_html=True)
             
             # Bokotra lehibe fandraisana anjara
             if st.button("✅ TSINDRIO ETO RAHA HANAMARINA NY FIHAVIANA", use_container_width=True):
                 try:
-                    # Nasiana fanitsiana koa ny anaran'ny tabilao eto
-                    supabase.table("Fitantanana_Fiara").update({"tonga": True}).eq("im_code", im_code).execute()
+                    # Manisy marika fa tonga izy (Raha manana tsanganana 'tonga' ny tabilao mpiasa)
+                    # Raha sendra misy fahadisoana eto dia mety noho ny tsy fisian'ny tsanganana 'tonga'
+                    supabase.table("mpiasa").update({"tonga": True}).eq("im", im_code).execute()
                     st.markdown('<p class="success-text">🎉 Tafiditra soa aman-tsara ny fihavianao!</p>', unsafe_allow_html=True)
                 except Exception as ex:
-                    st.error("Nisy olana kely ny fanoratana azy ao amin'ny database.")
+                    st.info("Fanamarihana: Voavaky ny mombamomba anao saingy tsy misy tsanganana 'tonga' ny tabilao hanoratana ny fihiahiana.")
 
     except Exception as e:
         st.error(f"Nisy olana teo am-pamakiana ny angon-drakitra: {e}")
