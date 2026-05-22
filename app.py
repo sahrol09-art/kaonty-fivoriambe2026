@@ -53,9 +53,7 @@ st.markdown('<div class="main-title">💼 SAMPANDRAHARAHAN\'NY KAONTY</div>', un
 def manadio_tanteraka(teksta):
     if not teksta:
         return ""
-    # Fafana ny tags HTML rehetra rehetra (ohatra: <div class...>, </div>)
     voadio = re.sub(r'<[^<]+?>', '', str(teksta))
-    # Fafana koa ny lohateny miverina raha sendra nampidirina tany amin'ny database
     for teny in ["Laharana IM", "Vondrona", "Laharana finday", "Fiangonana", "Tombotsoa sy Fanompoana"]:
         voadio = voadio.replace(teny, "")
     return voadio.strip()
@@ -77,7 +75,8 @@ if not im_code:
     st.warning("⚠️ Tsy misy kaody IM voavaky. Miandry scan avy amin'ny karatra...")
 else:
     try:
-        response = supabase.table("fivoriambe").select("*").eq("im_code", im_code).execute()
+        # !!! HANITSIAVANA HO AN'NY 'Fitantanana_Fiara' !!!
+        response = supabase.table("Fitantanana_Fiara").select("*").eq("im_code", im_code).execute()
         data = response.data
 
         if len(data) == 0:
@@ -85,11 +84,11 @@ else:
         else:
             row = data[0]
             
-            # 1. ANARANA (Asehoy any ivelany fa madio be)
+            # 1. ANARANA
             anarana_voadio = manadio_tanteraka(row.get('nom', 'RASOLOMANANA ROLAND'))
             st.subheader(f"👤 {anarana_voadio}")
             
-            # 2. NY MOMBAMOMBA NY MPIASA (Ampiasaina st.markdown madio)
+            # 2. NY MOMBAMOMBA NY MPIASA
             st.markdown('<div class="info-box">', unsafe_allow_html=True)
             
             # Laharana IM
@@ -125,7 +124,8 @@ else:
             # Bokotra lehibe fandraisana anjara
             if st.button("✅ TSINDRIO ETO RAHA HANAMARINA NY FIHAVIANA", use_container_width=True):
                 try:
-                    supabase.table("fivoriambe").update({"tonga": True}).eq("im_code", im_code).execute()
+                    # Nasiana fanitsiana koa ny anaran'ny tabilao eto
+                    supabase.table("Fitantanana_Fiara").update({"tonga": True}).eq("im_code", im_code).execute()
                     st.markdown('<p class="success-text">🎉 Tafiditra soa aman-tsara ny fihavianao!</p>', unsafe_allow_html=True)
                 except Exception as ex:
                     st.error("Nisy olana kely ny fanoratana azy ao amin'ny database.")
