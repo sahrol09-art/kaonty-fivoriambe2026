@@ -66,24 +66,27 @@ if not im_code:
     st.warning("⚠️ Tsy misy kaody IM voavaky. Miandry scan avy amin'ny karatra...")
 else:
     try:
-        # MIFANDRAY AMIN'NY TABILAO 'mpiasa' ARY MIREKIDY AMIN'NY TSANGANANA 'im'
-        response = supabase.table("mpiasa").select("*").eq("im", im_code).execute()
+        # Novonjena ho 'im_code_voadio' mba hanesorana izay space mety manelingelina
+        im_code_voadio = str(im_code).strip()
+        
+        # NAKANA BAINDRA MANOKANA: nampiasa ilike mba hitady na misy space aza any aoriana
+        response = supabase.table("mpiasa").select("*").ilike("im", f"%{im_code_voadio}%").execute()
         data = response.data
 
         if len(data) == 0:
-            st.error(f"❌ Tsy hita ao amin'ny tabilao 'mpiasa' ny kaody: {im_code}")
+            st.error(f"❌ Tsy hita ao amin'ny tabilao 'mpiasa' ny kaody: {im_code_voadio}")
         else:
             row = data[0]
             
             # Alaina ireo angona avy amin'ny tabilao 'mpiasa'
-            laharana_im = row.get('im', im_code)
+            laharana_im = row.get('im', im_code_voadio)
             vondrona = row.get('vondrona', '—')
             andraikitra = row.get('andraikitra', '—')
             
-            # Rehefa nodiovina tamin'ilay kaody teo aloha ny anarana raha sendra nisy miverina
-            anarana_fampiseho = str(andraikitra).replace("<div class=\"info-value\">", "").replace("</div>", "").strip()
+            # Fafana ny div HTML raha sendra mbola misy mipoitra avy any amin'ny data taloha
+            anarana_fampiseho = str(andraikitra).replace('<div class="info-value">', '').replace('</div>', '').strip()
 
-            # Fampisehoana ny anarana ho lohateny
+            # Fampisehoana ny anarana ho lohateny lehibe
             st.subheader(f"👤 {anarana_fampiseho}")
             
             st.markdown('<div class="info-box">', unsafe_allow_html=True)
@@ -101,12 +104,11 @@ else:
             # Bokotra lehibe fandraisana anjara
             if st.button("✅ TSINDRIO ETO RAHA HANAMARINA NY FIHAVIANA", use_container_width=True):
                 try:
-                    # Manisy marika fa tonga izy (Raha manana tsanganana 'tonga' ny tabilao mpiasa)
-                    # Raha sendra misy fahadisoana eto dia mety noho ny tsy fisian'ny tsanganana 'tonga'
-                    supabase.table("mpiasa").update({"tonga": True}).eq("im", im_code).execute()
+                    # Manisy marika "tonga" mampiasa ilay kaody im tena izy avy ao anatin'ny database
+                    supabase.table("mpiasa").update({"tonga": True}).eq("im", laharana_im).execute()
                     st.markdown('<p class="success-text">🎉 Tafiditra soa aman-tsara ny fihavianao!</p>', unsafe_allow_html=True)
                 except Exception as ex:
-                    st.info("Fanamarihana: Voavaky ny mombamomba anao saingy tsy misy tsanganana 'tonga' ny tabilao hanoratana ny fihiahiana.")
+                    st.info("Voavaky ny mombamomba anao saingy tsy misy tsanganana 'tonga' ny tabilao hanoratana ny fihiahiana.")
 
     except Exception as e:
         st.error(f"Nisy olana teo am-pamakiana ny angon-drakitra: {e}")
