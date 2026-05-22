@@ -8,7 +8,7 @@ st.set_page_config(
     layout="centered"
 )
 
-# CSS kanto ho an'ny finday
+# CSS kanto mifanaraka amin'ny finday
 st.markdown("""
     <style>
     .main-title {
@@ -66,10 +66,10 @@ if not im_code:
     st.warning("⚠️ Tsy misy kaody IM voavaky. Miandry scan avy amin'ny karatra...")
 else:
     try:
-        # Novonjena ho 'im_code_voadio' mba hanesorana izay space mety manelingelina
+        # Esorina ny space mety ho nisy tamin'ny dika mitovy
         im_code_voadio = str(im_code).strip()
         
-        # NAKANA BAINDRA MANOKANA: nampiasa ilike mba hitady na misy space aza any aoriana
+        # Fikarohana ao amin'ny tabilao 'mpiasa' amin'ny alalan'ny tsanganana 'im'
         response = supabase.table("mpiasa").select("*").ilike("im", f"%{im_code_voadio}%").execute()
         data = response.data
 
@@ -78,16 +78,17 @@ else:
         else:
             row = data[0]
             
-            # Alaina ireo angona avy amin'ny tabilao 'mpiasa'
+            # Fakana ny angona mifanaraka amin'ny structure hitantsika tamin'ny sary
+            anarana = row.get('anarana', '—')
             laharana_im = row.get('im', im_code_voadio)
             vondrona = row.get('vondrona', '—')
-            andraikitra = row.get('andraikitra', '—')
-            
-            # Fafana ny div HTML raha sendra mbola misy mipoitra avy any amin'ny data taloha
-            anarana_fampiseho = str(andraikitra).replace('<div class="info-value">', '').replace('</div>', '').strip()
+            finday = row.get('tel', '—')  # 'tel' no hitantsika tamin'ny sary
+            fiangonana = row.get('fiangonana', '—')  # 'fiangonana' tamin'ny sary faharoa
+            fanompoana = row.get('fanompoana', '—')
+            tombotsoa = row.get('tombotsoa', '—')
 
             # Fampisehoana ny anarana ho lohateny lehibe
-            st.subheader(f"👤 {anarana_fampiseho}")
+            st.subheader(f"👤 {anarana}")
             
             st.markdown('<div class="info-box">', unsafe_allow_html=True)
             
@@ -99,16 +100,34 @@ else:
             st.markdown('<div class="custom-label">Vondrona</div>', unsafe_allow_html=True)
             st.markdown(f'<div class="custom-value">👥 {vondrona}</div>', unsafe_allow_html=True)
             
+            # Laharana Finday
+            if finday and finday != '—':
+                st.markdown('<div class="custom-label">Laharana finday</div>', unsafe_allow_html=True)
+                st.markdown(f'<div class="custom-value">📞 {finday}</div>', unsafe_allow_html=True)
+                
+            # Fiangonana
+            if fiangonana and fiangonana != '—':
+                st.markdown('<div class="custom-label">Fiangonana</div>', unsafe_allow_html=True)
+                st.markdown(f'<div class="custom-value">🏛️ {fiangonana}</div>', unsafe_allow_html=True)
+                
+            # Fanompoana sy Tombotsoa
+            if (fanompoana and fanompoana != '—') or (tombotsoa and tombotsoa != '—'):
+                st.markdown('<div class="custom-label">Tombotsoa sy Fanompoana</div>', unsafe_allow_html=True)
+                andalan_asa = f"🌟 {fanompoana}"
+                if tombotsoa and tombotsoa != '—':
+                    andalan_asa += f" / {tombotsoa}"
+                st.markdown(f'<div class="custom-value">{andalan_asa}</div>', unsafe_allow_html=True)
+                
             st.markdown('</div>', unsafe_allow_html=True)
             
-            # Bokotra lehibe fandraisana anjara
+            # Bokotra fandraisana anjara
             if st.button("✅ TSINDRIO ETO RAHA HANAMARINA NY FIHAVIANA", use_container_width=True):
                 try:
-                    # Manisy marika "tonga" mampiasa ilay kaody im tena izy avy ao anatin'ny database
-                    supabase.table("mpiasa").update({"tonga": True}).eq("im", laharana_im).execute()
+                    # Manova ny 'vip' ho True satria io no karazany bool hita eo amin'ny sary faharoa
+                    supabase.table("mpiasa").update({"vip": True}).eq("im", laharana_im).execute()
                     st.markdown('<p class="success-text">🎉 Tafiditra soa aman-tsara ny fihavianao!</p>', unsafe_allow_html=True)
                 except Exception as ex:
-                    st.info("Voavaky ny mombamomba anao saingy tsy misy tsanganana 'tonga' ny tabilao hanoratana ny fihiahiana.")
+                    st.error("Nisy olana kely ny fanoratana azy ao amin'ny database.")
 
     except Exception as e:
         st.error(f"Nisy olana teo am-pamakiana ny angon-drakitra: {e}")
