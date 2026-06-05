@@ -51,7 +51,7 @@ if im_voaray:
                 if check_scan.data:
                     # Efa nisy nanao scan androany!
                     afaka_miditra = False
-                    antony_tsy_afahana = "Ity karatra VIP ity dia efa nampiasaina niditry ny olona iray androany. Tsy azo averina ampiasaina intsony ho fiarovana amin'ny photocopie!"
+                    antony_tsy_afahana = "Ity karatra VIP ity dia efa nampidirana olona iray androany. Tsy azo averina ampiasaina intsony ho fitsinjovana ny hafa"
             
             # Tehirizina foana ny tantaran'ny scan (na nahomby na tsia)
             # Hakana ny mombamomba ny fitaovana nanao scan (User Agent)
@@ -75,7 +75,7 @@ if im_voaray:
                     st.success("🎉 Mpiasa voasoratra anarana soa aman-tsara! (Parcours Normal)")
             else:
                 st.error(f"❌ FIDIRANA LAVINA: {antony_tsy_afahana}")
-                st.warning("⚠️ FAMPITANDREMANA HO AN'NY MPISAFO: Jereo tsara ny maha-izy azy ny olona mitazona ity finday ity.")
+                st.warning("⚠️ FAMPITANDREMANA HO AN'NY MPISAFO: Jereo tsara ilay olona mitazona ity BADGE ity. Anontanio izy, dia amarino amin'izay voalaza ato ny valiny (ny anarany, ny fiangonany, ny tel-ny)")
             
             # Aseho foana ny mombamomba ilay mpiasa na dia lavina aza ny fidirana
             col1, col2 = st.columns(2)
