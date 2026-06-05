@@ -12,7 +12,7 @@ try:
 except Exception as e:
     st.error(f"Tsy afaka nifandray tamin'ny Supabase: {e}")
 
-st.title("PROJET FIVORIAMBE")
+st.title("SAMPANDRAHARAHAN'NY KAONTY")
 st.subheader("Mombamomba ny Mpiasa")
 
 # 2. Hakana ilay "im" avy amin'ny URL rehefa misy manao Scan QR Code
@@ -23,7 +23,7 @@ if im_voaray:
     # Diovina tsara ny IM (esorina ny espace raha misy)
     im_madio = str(im_voaray).strip()
     
-    st.info(f"Karohina ao amin'ny Supabase ny IM: {im_madio}")
+    st.info(f"Karohina ao amin'ny serveur ny IM: {im_madio}")
     
     # 3. Fitarihana ny angona avy ao amin'ny tabilao "mpiasa" sy ny Fiarovana VIP
     try:
@@ -75,7 +75,7 @@ if im_voaray:
                     st.success("🎉 Mpiasa voasoratra anarana soa aman-tsara! (Parcours Normal)")
             else:
                 st.error(f"❌ FIDIRANA LAVINA: {antony_tsy_afahana}")
-                st.warning("⚠️ FAMPITANDREMANA HO AN'NY MPISAFO: Jereo tsara ilay olona mitazona ity BADGE ity. Anontanio izy, dia amarino amin'izay voalaza ato ny valiny (ny anarany, ny fiangonany, ny tel-ny)")
+                st.warning("⚠️ FAMPITANDREMANA HO AN'NY MPISAFO: Jereo tsara ilay olona mitazona ity BADGE ity. Anontanio izy, dia amarino amin'izay voalaza eto ambany ny valim-panontaniana (ny anarany?, ny fiangonany?, ny tel-ny?)")
             
             # Aseho foana ny mombamomba ilay mpiasa na dia lavina aza ny fidirana
             col1, col2 = st.columns(2)
