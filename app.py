@@ -12,7 +12,7 @@ try:
 except Exception as e:
     st.error(f"Tsy afaka nifandray tamin'ny Supabase: {e}")
 
-st.title("SAMPANDRAHARAHAN'NY KAONTY")
+st.title("SAMPANDRAHARAHAN'NY KAONTY 2026")
 st.subheader("Mombamomba ny Mpiasa")
 
 # 2. Hakana ilay "im" avy amin'ny URL rehefa misy manao Scan QR Code
