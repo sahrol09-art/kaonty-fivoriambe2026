@@ -75,7 +75,7 @@ if im_voaray:
                     st.success("🎉 Mpiasa voasoratra anarana ara-dalàna! (Parcours Normal)")
             else:
                 st.error(f"# ❌ FIDIRANA LAVINA: {antony_tsy_afahana}")
-                st.warning("### ⚠️ FAMPITANDREMANA HO AN'NY MPISAFO: Jereo tsara ilay olona mitazona ity BADGE ity. Anontanio izy, dia amarino amin'izay voalaza eto ambany ny valim-panontaniana (ny anarany?, nyandraikitrany?, ny fiangonany?, ny tel-ny?)")
+                st.warning("### ⚠️ FAMPITANDREMANA HO AN'NY MPISAFO: Jereo tsara ilay olona mitazona ity BADGE ity. Anontanio izy, dia amarino amin'izay voalaza eto ambany ny valim-panontaniana (Iza ny anarany, Inona ny andraikiny, Inona ny fiangonanana misy azy, ary firy ny tel-ny. Raha marina DAHOLO ny valinteniny, dia afaka ampidirina ihany izy)")
             
             # Aseho foana ny mombamomba ilay mpiasa na dia lavina aza ny fidirana
             col1, col2 = st.columns(2)
