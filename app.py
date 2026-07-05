@@ -70,12 +70,12 @@ if im_voaray:
             # --- FAMPISHOANA NY VALINY EO AMIN'NY ECRAN ---
             if afaka_miditra:
                 if is_vip:
-                    st.success("🎉 LAISSEZ-PASSER VIP: AFAKA MIDITRA TSY MILAHATRA!")
+                    st.success("# 🎉 LAISSEZ-PASSER VIP: AFAKA MIDITRA TSY MILAHATRA!")
                 else:
-                    st.success("🎉 Mpiasa voasoratra anarana soa aman-tsara! (Parcours Normal)")
+                    st.success("🎉 Mpiasa voasoratra anarana ara-dalàna! (Parcours Normal)")
             else:
                 st.error(f"# ❌ FIDIRANA LAVINA: {antony_tsy_afahana}")
-                st.warning("⚠️ FAMPITANDREMANA HO AN'NY MPISAFO: Jereo tsara ilay olona mitazona ity BADGE ity. Anontanio izy, dia amarino amin'izay voalaza eto ambany ny valim-panontaniana (ny anarany?, nyandraikitrany?, ny fiangonany?, ny tel-ny?)")
+                st.warning("### ⚠️ FAMPITANDREMANA HO AN'NY MPISAFO: Jereo tsara ilay olona mitazona ity BADGE ity. Anontanio izy, dia amarino amin'izay voalaza eto ambany ny valim-panontaniana (ny anarany?, nyandraikitrany?, ny fiangonany?, ny tel-ny?)")
             
             # Aseho foana ny mombamomba ilay mpiasa na dia lavina aza ny fidirana
             col1, col2 = st.columns(2)
@@ -83,7 +83,7 @@ if im_voaray:
                 st.write(f"**Laharana IM:** {mpiasa.get('im')}")
                 st.write(f"## **Anarana:** {mpiasa.get('anarana', '').upper()}")
                 st.write(f"### **Andraikitra:** {mpiasa.get('andraikitra')}")
-                st.write(f"# **Statuts VIP:** {'✅ ENY' if is_vip else '❌ TSIA'}")
+                st.write(f"#### **Statuts VIP:** {'✅ ENY' if is_vip else '❌ TSIA'}")
             with col2:
                 st.write(f"**Laharana Finday:** {mpiasa.get('tel')}")
                 st.write(f"**Vondrona:** {mpiasa.get('vondrona')}")
