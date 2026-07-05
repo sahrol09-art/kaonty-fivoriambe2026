@@ -88,6 +88,7 @@ if im_voaray:
                 st.write(f"**Laharana Finday:** {mpiasa.get('tel')}")
                 st.write(f"**Vondrona:** {mpiasa.get('vondrona')}")
                 st.write(f"**Fiangonana:** {mpiasa.get('fiangonana')}")
+                st.write(f"**Tsipirihiny:** {mpiasa.get('fanompoana')}")
         else:
             st.error(f"❌ Tsy hita ao amin'ny tabilao 'mpiasa' ny laharana IM: {im_madio}")
             st.warning("Hamarino tsara ny tsipelina ao amin'ny database.")
