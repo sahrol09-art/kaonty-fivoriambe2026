@@ -86,7 +86,7 @@ if im_voaray:
                 st.write(f"#### **Statuts VIP:** {'✅ ENY' if is_vip else '❌ TSIA'}")
             with col2:
                 st.write(f"**Laharana Finday:** {mpiasa.get('tel')}")
-                st.write(f"**Vondrona:** {mpiasa.get('vondrona')}")
+                st.write(f"**Ekipa:** {mpiasa.get('vondrona')}")
                 st.write(f"**Fiangonana:** {mpiasa.get('fiangonana')}")
                 st.write(f"**Tsipirihiny:** {mpiasa.get('fanompoana')}")
                 st.write(f"**Tombontsoam-panompoana:** {mpiasa.get('tombotsoa')}")                
