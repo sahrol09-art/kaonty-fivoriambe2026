@@ -81,9 +81,9 @@ if im_voaray:
             col1, col2 = st.columns(2)
             with col1:
                 st.write(f"**Laharana IM:** {mpiasa.get('im')}")
-                st.write(f"**Anarana:** {mpiasa.get('anarana', '').upper()}")
-                st.write(f"**Andraikitra:** {mpiasa.get('andraikitra')}")
-                st.write(f"**Statuts VIP:** {'✅ ENY' if is_vip else '❌ TSIA'}")
+                st.write(f"## **Anarana:** {mpiasa.get('anarana', '').upper()}")
+                st.write(f"### **Andraikitra:** {mpiasa.get('andraikitra')}")
+                st.write(f"# **Statuts VIP:** {'✅ ENY' if is_vip else '❌ TSIA'}")
             with col2:
                 st.write(f"**Laharana Finday:** {mpiasa.get('tel')}")
                 st.write(f"**Vondrona:** {mpiasa.get('vondrona')}")
