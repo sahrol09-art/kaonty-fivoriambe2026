@@ -4,7 +4,7 @@ from datetime import datetime
 
 # 1. NY LOGINS SUPABASE
 SUPABASE_URL = "https://fkfreixjgdlopgkazleq.supabase.co"
-SUPABASE_KEY = "sb_secret_r_T6QN69JSDMUZcD14cAzA_cs4I5Ne7"
+SUPABASE_KEY = "sb_publishable_mx13A8ZZVOyCrrfACmbFSg_OezmAn95"
 
 # Fampifandraisana amin'ny Supabase
 try:
